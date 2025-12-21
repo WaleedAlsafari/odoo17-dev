@@ -1,0 +1,86 @@
+<odoo>
+    <!-- This is a tree view -->
+    <!-- create a record/row within model/table "ir.ui.view" -->
+    <record id="property_view_tree" model="ir.ui.view">
+        <field name="name">property tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="postcode" />
+                <field name="date_availability" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="garden" optional='1' />
+            </tree>
+        </field>
+    </record>
+    <!-- This is a search view for searching -->
+    <record id="property_view_search" model="ir.ui.view">
+        <field name="name">property search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="postcode" />
+                <field name="name" />
+
+            </search>
+        </field>
+    </record>
+
+
+    <!-- This is a form view -->
+    <record id="property_view_form" model="ir.ui.view">
+        <field name="name">property form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" />
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string='General Info'>
+                            <field name="postcode" />
+                            <field name="date_availability" />
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                            <field name="bedrooms" />
+                            <field name="living_area" />
+                            <field name="facades" />
+                        </group>
+
+                        <group string='Addtional Info'>
+                            <field name="garage" />
+                            <field name="garden" />
+                            <field name="garden_area" />
+                            <field name="garden_orientation" />
+                        </group>
+
+                        <group>
+                            <field name="description" />
+                        </group>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="property_action" model="ir.actions.act_window">
+        <field name="name">property actions</field>
+        <field name="res_model">estate.property</field>
+    </record>
+
+
+    <menuitem
+        id="estate_property_menu_item"
+        name="Properties"
+        parent="estate_property_menu"
+        action="property_action"
+    />
+</odoo>
