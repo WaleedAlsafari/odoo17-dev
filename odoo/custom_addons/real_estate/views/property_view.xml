@@ -16,17 +16,24 @@
         </field>
     </record>
     <!-- This is a search view for searching -->
-    <record id="property_view_search" model="ir.ui.view">
+    <!-- <record id="property_view_search" model="ir.ui.view">
         <field name="name">property search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
                 <field name="postcode" />
-                <field name="name" />
+                <field name="name" /> -->
+                <!-- Filters -->
+                <!-- <filter name="is_garden" string="With Garden" domain="[('garden','=',True)]"/>
+                <filter name="is_not_garden" string="Without Garden" domain="[('garden','=',False)]"/>
+                <filter name="is_garage" string="With Garage" domain="[('garage','=',True)]"/> -->
+
+                <!-- groups -->
+                 <!-- <filter name="garden_group" string="Garden" context= "{'group_by' : 'garden'}"/>
 
             </search>
         </field>
-    </record>
+    </record> -->
 
 
     <!-- This is a form view -->
