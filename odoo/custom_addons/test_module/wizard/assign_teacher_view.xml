@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<odoo>
+      	
+      	<record id="view_assign_teacher_wizard_form" model="ir.ui.view">
+      		<field name="name">assign.teacher.form.view</field>
+      		<field name="model">assign.teacher</field>
+      		<field name="arch" type="xml">
+      			<form string="Assign Teacher Form">
+      				<group>
+      					<field name="name" readonly="1"/>
+      					<field name="new_name" required="1"/>
+      				</group>
+      				<footer>
+      					<button name="set_teacher" string="Replace" class="oe_highlight" type="object"/>
+      					
+      				</footer>
+      			</form>
+      		</field>
+		</record>      		
+      	
+     <record id="action_assign_teacher_student" model="ir.actions.act_window">
+            <field name="name">Rename</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">assign.teacher</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+      </record>
+      
+      
+      <act_window name="Rename All Students"
+            res_model="assign.teacher"
+            src_model="penygon.student"
+            view_mode="form"
+            target="new"
+            key2="multi"
+            id="pop_action_rename_student"
+            
+        />
+      
+      
+</odoo>

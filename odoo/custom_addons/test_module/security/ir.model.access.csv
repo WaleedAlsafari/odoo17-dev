@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_penygon_school_admin,penygon.school.admin,test_module.model_penygon_school,test_module.group_school_admin,1,1,1,1
+access_penygon_student_admin,penygon.student.admin,test_module.model_penygon_student,test_module.group_school_admin,1,1,1,1
+access_penygon_student_log_admin,penygon.student.log.admin,test_module.model_penygon_student_log,test_module.group_school_admin,1,1,1,1
+access_penygon_teacher_admin,penygon.teacher.admin,test_module.model_penygon_teacher,test_module.group_school_admin,1,1,1,1
+access_penygon_marklist_admin,penygon.marklist.admin,test_module.model_penygon_marklist,test_module.group_school_admin,1,1,1,1
+access_penygon_teacher_teacher,penygon.teacher.teacher,test_module.model_penygon_teacher,test_module.group_school_teacher,1,0,0,0
+access_penygon_student_teacher,penygon.student.teacher,test_module.model_penygon_student,test_module.group_school_teacher,1,0,0,0
+access_penygon_marklist_teacher,penygon.marklist.teacher,test_module.model_penygon_marklist,test_module.group_school_teacher,1,1,1,1

@@ -1,0 +1,65 @@
+<odoo>
+		<!-- Search view -->
+		<record id="view_marklist_search" model="ir.ui.view">
+      		<field name="name">penygon.marklist.search.view</field>
+      		<field name="model">penygon.marklist</field>
+      		<field name="arch" type="xml">
+      			<search string="Marklist Search">
+      				<filter string="Passed Students" name="passed_students" domain="[('status','=','pass')]"/>
+      				<filter string="Failed Students" name="failed_students" domain="[('status','=','fail')]"/>
+      				<group expand="0" string="Group By">
+                        <filter string="Status" name="group_status" domain="" context="{'group_by':'status'}"/>
+                    </group>
+      			</search>
+      		</field>
+      	</record>
+		<!-- List view-->
+      	<record id="view_marklist_tree" model="ir.ui.view">
+      		<field name="name">penygon.marklist.tree.view</field>
+      		<field name="model">penygon.marklist</field>
+      		<field name="arch" type="xml">
+      			<tree string="Marklist Tree">
+      				<field name="student_id"/>
+      				<field name="name"/>
+      				
+      				<field name="marks" sum="Average"/>
+      				
+      			</tree>
+      		</field>
+      	</record>
+      	
+      	<!-- Form view -->
+      	<record id="view_marklist_form" model="ir.ui.view">
+      		<field name="name">penygon.marklist.form.view</field>
+      		<field name="model">penygon.marklist</field>
+      		<field name="arch" type="xml">
+      			<form string="Marklist Form">
+      				<group col="4">
+	      				<field name="name"/>
+	      				<field name="student_id"/>
+	      				<field name="teacher_id" string="Submitted by" groups="test_module.group_school_admin"/>
+	      				<field name="student_school_id" groups="test_module.group_school_admin"/>
+      				</group>
+      				<group string="Marks" col="6">
+      					<field name="marks"/>
+	      				<field name="out_of"/>
+	      				<field name="percentage"/>
+	      				<field name="status" widget="radio" options="{'horizontal': True}"/>
+      					<field name="progress_card"/>
+      				</group>
+      			</form>
+      		</field>
+		</record>      		
+      	
+     <record id="action_marklist" model="ir.actions.act_window">
+            <field name="name">Marklist</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">penygon.marklist</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_group_status': 1}</field>
+            <field name="domain">[]</field>
+      </record>
+      
+      
+</odoo>

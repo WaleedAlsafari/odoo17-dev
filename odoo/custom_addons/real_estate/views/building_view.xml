@@ -1,0 +1,80 @@
+<odoo>
+    <!-- This is a tree view -->
+    <!-- create a record/row within model/table "ir.ui.view" -->
+    <record id="building_view_tree" model="ir.ui.view">
+        <field name="name">building tree</field>
+        <field name="model">building</field>
+        <field name="arch" type="xml">
+            <tree multi_edit='1' create='1' edit='1' delete='1' >
+                <field name="num" />
+                <field name="code" />
+            </tree>
+        </field>
+    </record>
+    <!-- This is a search view for searching -->
+    <!-- <record id="property_view_search" model="ir.ui.view">
+        <field name="name">property search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="postcode" />
+                <field name="name" /> -->
+    <!-- Filters -->
+    <!-- <filter name="is_garden" string="With Garden" domain="[('garden','=',True)]"/>
+                <filter name="is_not_garden" string="Without Garden" domain="[('garden','=',False)]"/>
+                <filter name="is_garage" string="With Garage" domain="[('garage','=',True)]"/> -->
+
+    <!-- groups -->
+    <!-- <filter name="garden_group" string="Garden" context= "{'group_by' : 'garden'}"/>
+
+            </search>
+        </field>
+    </record> -->
+
+
+    <!-- This is a form view -->
+    <record id="building_view_form" model="ir.ui.view">
+        <field name="name">building form</field>
+        <field name="model">building</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string='General Info'>
+                            <field name="num" />
+                          
+                        </group>
+
+                        <group string='Addtional Info'>
+                            <field name="code" />
+                            <field name="description" />
+                            <field name="active" />
+                            
+                        </group>
+
+                    </group>
+                   
+                </sheet>
+                <div class='oe_chatter'>
+                <field name='message_follower_ids'/>
+                <field name='activity_ids'/>
+                <field name='message_ids'/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="building_action" model="ir.actions.act_window">
+        <field name="name">Buildings</field>
+        <field name="res_model">building</field>
+    </record>
+
+
+    <menuitem
+        id="building_menu_item"
+        name="Buildings"
+        parent="estate_property_menu"
+        action="building_action"
+    />
+</odoo>

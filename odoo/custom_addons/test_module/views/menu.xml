@@ -1,0 +1,10 @@
+<odoo>
+	<menuitem name="School" id="menu_school_master" sequence="1"/>
+	<menuitem name="Transaction"  id="menu_school_transaction" sequence="1" parent="menu_school_master" groups="test_module.group_school_admin,test_module.group_school_teacher"/>     
+	<menuitem name="Configuration"  id="menu_school_configuration" sequence="2" parent="menu_school_master" groups="test_module.group_school_admin"/>  
+	<menuitem name="Marklist" action="action_marklist" id="menu_marklist" sequence="1" parent="menu_school_transaction" />
+	 <menuitem name="School" action="action_view_school" id="menu_school" sequence="1" parent="menu_school_configuration"/>
+	 <menuitem name="Teachers" action="action_teacher_master" id="menu_teacher" sequence="2" parent="menu_school_configuration"/>
+	 <menuitem name="Student" action="action_student_master" id="menu_student" sequence="3" parent="menu_school_configuration"/>
+
+</odoo>

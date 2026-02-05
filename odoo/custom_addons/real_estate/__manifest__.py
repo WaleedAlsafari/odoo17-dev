@@ -1,7 +1,12 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base'],
+    'depends': [
+        'base',
+        'sale_management',
+        'account',
+        'mail'
+                ],
     'author': "Waleed A",
     'category': 'Category',
     'description': """
@@ -12,7 +17,16 @@
         'security/ir.model.access.csv',
         'views/base_menu.xml',
         'views/property_view.xml',
+        'views/owner_view.xml',
+        'views/tag_view.xml',
+        'views/sale_order_view.xml',
+        'views/building_view.xml',
+        
     ],
+    
+    'assets' : { 
+        'web.assets_backend' : ['real_estate/static/src/css/property.css']
+    },
     'application': True
 
   

@@ -1,0 +1,20 @@
+<odoo>
+    <menuitem
+        id="library_root_menu"
+        name="Library Management"
+
+    />
+
+    <record id="library_action" model="ir.actions.act_window">
+        <field name="name">Library</field>
+        <field name="res_model">library.book</field>
+    </record>
+
+    <menuitem
+        id="library_menu"
+        name="Books"
+        parent="library_root_menu"
+        action='library_action'
+    />
+
+</odoo>

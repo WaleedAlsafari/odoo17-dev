@@ -5,35 +5,41 @@
         <field name="name">property tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree multi_edit='1' create='1' edit='1' delete='1' class='custom_header' decoration-danger="is_late == True">
                 <field name="name" />
+                <field name="owner_id" />
+                <field name="owner_phone" />
                 <field name="postcode" />
                 <field name="date_availability" />
                 <field name="expected_price" />
                 <field name="selling_price" />
+                <field name="state" />
+                <field name='is_late' invisible='1'/>
                 <field name="garden" optional='1' />
             </tree>
         </field>
     </record>
+
     <!-- This is a search view for searching -->
-    <!-- <record id="property_view_search" model="ir.ui.view">
+    <record id="property_view_search" model="ir.ui.view">
         <field name="name">property search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
                 <field name="postcode" />
-                <field name="name" /> -->
-                <!-- Filters -->
-                <!-- <filter name="is_garden" string="With Garden" domain="[('garden','=',True)]"/>
+                <field name="name" /> 
+    <!-- Filters -->
+   <filter name="is_garden" string="With Garden" domain="[('garden','=',True)]"/>
                 <filter name="is_not_garden" string="Without Garden" domain="[('garden','=',False)]"/>
-                <filter name="is_garage" string="With Garage" domain="[('garage','=',True)]"/> -->
+                <filter name="is_garage" string="With Garage" domain="[('garage','=',True)]"/> 
+                <filter name='is_archived' string='Archived' domain='[("active","!=",True)]'/>
 
-                <!-- groups -->
-                 <!-- <filter name="garden_group" string="Garden" context= "{'group_by' : 'garden'}"/>
+    <!-- groups -->
+     <filter name="garden_group" string="Garden" context= "{'group_by' : 'garden'}"/>
 
             </search>
         </field>
-    </record> -->
+    </record>
 
 
     <!-- This is a form view -->
@@ -42,6 +48,29 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name='action_mark_draft'
+                        type='object'
+                        string='Mark as draft'
+                        class='btn-primary'
+                        invisible="state == 'draft'"
+                    />
+                    <button name='action_mark_pending'
+                        type='object'
+                        string='Mark as pending'
+                        class='btn-primary'
+                        invisible="state != 'draft'"
+                    />
+                    <button name='action_mark_sold'
+                        type='object'
+                        string='Mark as Sold'
+                        class='btn-primary'
+                        invisible="state != 'pending'"
+                    />
+
+                    <field name='state' widget='statusbar' />
+                </header>
+
                 <sheet>
                     <div class="oe_title">
                         <label for="name" />
@@ -53,8 +82,10 @@
                         <group string='General Info'>
                             <field name="postcode" />
                             <field name="date_availability" />
+                            <field name="expected_selling_date" />
                             <field name="expected_price" />
                             <field name="selling_price" />
+                            <field name="diff_price"/>
                             <field name="bedrooms" />
                             <field name="living_area" />
                             <field name="facades" />
@@ -67,12 +98,35 @@
                             <field name="garden_orientation" />
                         </group>
 
+                        <group string='Owner Info'>
+                            <field name="owner_id" />
+                            <field name="owner_phone" />
+                            <field name="tag_ids" widget='many2many_tags' />
+                        </group>
+
                         <group>
-                            <field name="description" />
+                            <field name="description" required="1" />
+                            <field name='active' invisible='1'/>
                         </group>
 
                     </group>
+                    <notebook>
+                        <page string='Bedrooms'>
+                           <field name='line_ids'>
+                            <tree editable='buttom'>
+                            <field name='description'/>
+                            <field name='area'/>
+                           </tree>
+                           </field>
+                           
+                        </page>
+                    </notebook>
                 </sheet>
+                <div class='oe_chatter'>
+                <field name='message_follower_ids'/>
+                <field name='activity_ids'/>
+                <field name='message_ids'/>
+                </div>
             </form>
         </field>
     </record>
@@ -90,4 +144,31 @@
         parent="estate_property_menu"
         action="property_action"
     />
+
+    <!-- Server Action -->
+    <!-- <record id='property_closed_server_action' model='ir.actions.server'>
+       <field name='name'>Close Property</field>
+       <field name='model_id' ref='model_estate_property'/>
+       <field name='binding_model_id' ref='model_estate_property'/>
+       <field name='state'>code</field>
+       <field name='code'>
+        action= records.action_mark_completed()
+       </field>
+    </record> -->
+
+    <!-- Automated Action -->
+    <record id='check_expected_selling_date_cron' model='ir.cron'>
+    <field name='name'>Property: Check selling date</field>
+    <field name='model_id' ref='model_estate_property'/>
+    <field name='state'>code</field>
+    <field name='code'>
+        model.check_expected_selling_date()
+    </field>
+    <field name='interval_number'>1</field>
+    <field name='interval_type'>days</field>
+    <!-- if -1 it means call it everyday otherwise just put any number represent how many days (depends on the interval type) -->
+    <field name='numbercall'>-1</field>
+    <field name='active'>True</field>
+
+    </record>
 </odoo>

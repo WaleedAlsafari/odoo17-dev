@@ -1,0 +1,83 @@
+<odoo>
+    <record id='library_list_view' model='ir.ui.view'>
+        <field name='name'>Library list view</field>
+        <field name='model'>library.book</field>
+        <field name='arch' type='xml'>
+            <tree>
+                <field name='name' />
+                <field name='author' />
+                <field name='isbn' optional='1' />
+                <field name='pages' optional='1' />
+                <field name='available' />
+                <field name='price' />
+                <field name='total_price' optional='1'/>
+                <field name='state' />
+            </tree>
+        </field>
+    </record>
+
+    <record id='library_form_view' model='ir.ui.view'>
+        <field name='name'>Library form</field>
+        <field name='model'>library.book</field>
+        <field name='arch' type='xml'>
+            <form>
+                <header>
+                    <button name="_action_set_available"
+                        string="Set Available"
+                        type="object"
+                />
+
+                    <button name="_action_set_borrowed"
+                        string="Borrow"
+                        type="object"
+                        />
+                </header>
+
+                <sheet>
+                    <div class='oe_title'>
+                        <label for='name' />
+                        <h1>
+                            <field name='name' />
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string='Book Information'>
+                            <field name='author' />
+                            <field name='isbn' required='1' />
+                            <field name='pages' />
+                        </group>
+                        <group string='Pricing'>
+                            <field name='price' />
+                            <field name='total_price' />
+                        </group>
+                        <group string='Status'>
+                            <field name='available' />
+                            <field name='state' readonly='1' />
+                        </group>
+
+                        <group string='Description'>
+                            <field name='description' invisible="available == False" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id='library_search_view' model='ir.ui.view'>
+        <field name='name'>Search Book</field>
+        <field name='model'>library.book</field>
+        <field name='arch' type='xml'>
+            <search>
+                <field name='name' />
+                <field name='author' />
+                <field name='isbn' />
+
+                <filter name='is_available' string='Available' domain='[("state","=","available",)]' />
+                <filter name='is_borrowed' string='Borrowed' domain='[("state","=","borrowed")]' />
+            </search>
+        </field>
+    </record>
+
+</odoo>

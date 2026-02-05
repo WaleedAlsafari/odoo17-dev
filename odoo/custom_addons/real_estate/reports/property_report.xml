@@ -1,0 +1,5 @@
+<odoo>
+    <record id='property_report' model='ir.actions.reports'>
+
+    </record>
+</odoo>
