@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Report Action -->
+    <record id="action_report_task_timesheet" model="ir.actions.report">
+        <field name="name">Task Timesheet Report</field>
+        <field name="model">todo.task</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">todo_management.report_task_timesheet</field>
+        <field name="report_file">todo_management.report_task_timesheet</field>
+        <field name="binding_model_id" ref="model_todo_task" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- QWeb Template -->
+    <template id="report_task_timesheet">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+
+                    <div class="page">
+                        <div class="r-wrap">
+
+                            <!-- ===== TOP BAR ===== -->
+                            <div class="r-topbar">
+                                <div class="r-company-card">
+                                    <div class="r-company-row">
+                                        <t t-if="o.env.company.logo">
+                                            <img t-att-src="image_data_uri(o.env.company.logo)"
+                                                class="r-logo" />
+                                        </t>
+                                        <div class="r-company-info">
+                                            <div class="r-company-name" t-out="o.env.company.name" />
+                                            <div class="r-company-line"
+                                                t-out="o.env.company.partner_id.contact_address" />
+                                            <div class="r-company-line" t-if="o.env.company.phone">
+                                                Phone: <span t-out="o.env.company.phone" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ===== MAIN BOX ===== -->
+                            <div class="r-mainbox">
+
+                                <!-- Task Details (زي الصورة: label يسار + value يمين بنفس السطر) -->
+                                <div class="r-kv">
+                                    <div class="r-kv-row">
+                                        <div class="r-k">TASK:</div>
+                                        <div class="r-v">
+                                            <span t-out="o.name" />
+                                        </div>
+                                    </div>
+
+                                    <div class="r-kv-row">
+                                        <div class="r-k">Due Date:</div>
+                                        <div class="r-v">
+                                            <t t-if="o.due_date">
+                                                <span t-field="o.due_date"
+                                                    t-options="{'widget':'date'}" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </div>
+                                    </div>
+
+                                    <div class="r-kv-row">
+                                        <div class="r-k">Assign To:</div>
+                                        <div class="r-v">
+                                            <t t-if="o.assign_to_id">
+                                                <span t-out="o.assign_to_id.name" />
+                                            </t>
+                                            <t t-else="">-</t>
+                                        </div>
+                                    </div>
+
+                                    <div class="r-kv-row">
+                                        <div class="r-k">Estimated Time:</div>
+                                        <div class="r-v">
+                                            <t t-if="o.estimated_time">
+                                                <span t-out="o.estimated_time" /> H </t>
+                                            <t t-else="">-</t>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="r-desc">
+                                    <div class="r-desc-title">Description:</div>
+                                    <div class="r-desc-text">
+                                        <t t-if="o.description">
+                                            <span t-out="o.description" />
+                                        </t>
+                                        <t t-else="">-</t>
+                                    </div>
+                                </div>
+
+                                <!-- Timesheet Title (شريط مثل الصورة لكن أجمل) -->
+                                <div class="r-section-title">Timesheet</div>
+
+                                <!-- Timesheet Table -->
+                                <t t-set="lines" t-value="o.line_ids" />
+                                <table class="r-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="r-w-no">#</th>
+                                            <th class="r-w-date">Date</th>
+                                            <th>Description</th>
+                                            <th class="r-w-time">Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-if="lines">
+                                            <t t-set="counter" t-value="0" />
+                                            <t t-foreach="lines" t-as="l">
+                                                <t t-set="counter" t-value="counter + 1" />
+                                                <tr>
+                                                    <td class="r-center">
+                                                        <span t-out="counter" />
+                                                    </td>
+                                                    <td class="r-center">
+                                                        <t t-if="l.date">
+                                                            <span t-field="l.date"
+                                                                t-options="{'widget':'date'}" />
+                                                        </t>
+                                                        <t t-else="">-</t>
+                                                    </td>
+                                                    <td>
+                                                        <t t-if="l.note">
+                                                            <span t-out="l.note" />
+                                                        </t>
+                                                        <t t-else="">-</t>
+                                                    </td>
+                                                    <td class="r-center">
+                                                        <t t-if="l.duration"><span
+                                                                t-out="l.duration" /> H</t>
+                                                        <t t-else="">0 H</t>
+                                                    </td>
+                                                </tr>
+                                            </t>
+
+                                            <tr class="r-total">
+                                                <td colspan="3" class="r-total-label">Total Time</td>
+                                                <td class="r-center">
+                                                    <t t-if="o.total_duration"><span
+                                                            t-out="o.total_duration" /> H</t>
+                                                    <t t-else="">0 H</t>
+                                                </td>
+                                            </tr>
+                                        </t>
+
+                                        <t t-else="">
+                                            <tr>
+                                                <td colspan="4" class="r-center r-muted">No
+                                                    timesheet lines</td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                            <!-- ===== BOTTOM BAR ===== -->
+                            <div class="r-bottombar">
+                                <div class="r-footer-card">
+                                    <t t-if="o.env.company.email">Email: <span
+                                            t-out="o.env.company.email" /></t>
+                                    <t t-if="o.env.company.email and o.env.company.phone"> | </t>
+                                    <t t-if="o.env.company.phone">Phone: <span
+                                            t-out="o.env.company.phone" /></t>
+                                    <t t-if="o.env.company.company_registry"> | Reg: <span
+                                            t-out="o.env.company.company_registry" /></t>
+                                </div>
+
+                                <div class="r-page-card">
+                                    <span class="page" /> / <span class="topage" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ===== STYLES ===== -->
+                    <style>
+                        
+                        .o_report_layout .o_report_content,
+                        .o_report_layout .page,
+                        .o_report_layout .oe_structure,
+                        .o_report_layout .container,
+                        .o_report_layout .container-fluid{
+                        width: 100% !important;
+                        max-width: none !important;
+                        margin-left: 0 !important;
+                        margin-right: 0 !important;
+                        padding-left: 0 !important;
+                        padding-right: 0 !important;
+                        }
+
+                        /* 2) خَلّي بلوكاتك نفسها تتمدد بدون ما تكسر الحواف */
+                        .r-topbar, .r-mainbox, .r-bottombar{
+                        width: 100% !important;
+                        box-sizing: border-box;
+                        }
+
+                        /* Page base */
+                        .page{
+                        height:100%;
+                        width:100%;
+                        }
+                        .r-wrap{
+                        width:100%;
+                        font-family: Arial, sans-serif;
+                        color:#101828;
+                        }
+
+                        /* Top / Bottom bars (زي الصورة: شريط رمادي خفيف) */
+                        .r-topbar, .r-bottombar{
+                        width:100%;
+                        background:#F2F4F7;
+                        border:1px solid #D0D5DD;
+                        border-radius:10px;
+                        padding:12px;
+                        }
+                        .r-topbar{
+                        margin-bottom:12px;
+                        }
+                        .r-bottombar{
+                        margin-top:12px;
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:flex-end;
+                        gap:10px;
+                        }
+
+                        /* Small cards inside bars */
+                        .r-company-card, .r-footer-card, .r-page-card{
+                        background:#fff;
+                        border:1px solid #D0D5DD;
+                        border-radius:8px;
+                        padding:10px 12px;
+                        box-shadow: 0 1px 0 rgba(16,24,40,.04);
+                        }
+                        .r-company-card{ max-width:360px; }
+                        .r-footer-card{ flex:1; font-size:11px; color:#344054; }
+                        .r-page-card{ min-width:120px; text-align:center; font-size:11px;
+                        color:#344054; }
+
+                        /* Company header */
+                        .r-company-row{ display:flex; gap:10px; align-items:flex-start; }
+                        .r-logo{ width:54px; height:54px; object-fit:contain; }
+                        .r-company-name{ font-weight:800; font-size:12.5px; margin-bottom:2px; }
+                        .r-company-line{ font-size:10.8px; color:#344054; line-height:1.35; }
+
+                        /* Main big box (الصندوق الكبير في النص) */
+                        .r-mainbox{
+                        border:2px solid #98A2B3;
+                        border-radius:10px;
+                        background:#fff;
+                        padding:16px 16px 14px;
+                        }
+
+                        /* Key/Value rows (TASK, Due Date...) */
+                        .r-kv{ margin-bottom:12px; }
+                        .r-kv-row{
+                        display:flex;
+                        gap:12px;
+                        margin:4px 0;
+                        align-items:baseline;
+                        }
+                        .r-k{
+                        width:140px;
+                        font-weight:800;
+                        font-size:12px;
+                        color:#111827;
+                        }
+                        .r-v{
+                        flex:1;
+                        font-weight:600;
+                        font-size:12px;
+                        color:#101828;
+                        }
+
+                        /* Description block */
+                        .r-desc{
+                        margin:10px 0 14px;
+                        }
+                        .r-desc-title{
+                        font-weight:800;
+                        margin-bottom:6px;
+                        font-size:12px;
+                        }
+                        .r-desc-text{
+                        border:1px solid #D0D5DD;
+                        border-radius:8px;
+                        padding:10px 12px;
+                        background:#FAFAFB;
+                        font-size:12px;
+                        line-height:1.5;
+                        color:#101828;
+                        }
+
+                        /* Section title like a strip */
+                        .r-section-title{
+                        border:1px solid #98A2B3;
+                        border-radius:8px;
+                        padding:8px 10px;
+                        text-align:center;
+                        font-weight:900;
+                        margin:0 0 10px 0;
+                        background:#F8FAFC;
+                        }
+
+                        /* Table */
+                        .r-table{
+                        width:100%;
+                        border-collapse:collapse;
+                        border:1px solid #98A2B3;
+                        font-size:11.5px;
+                        }
+                        .r-table thead th{
+                        background:#EEF2F6;
+                        border:1px solid #98A2B3;
+                        padding:8px 10px;
+                        font-weight:900;
+                        }
+                        .r-table tbody td{
+                        border:1px solid #98A2B3;
+                        padding:8px 10px;
+                        vertical-align:top;
+                        }
+                        .r-w-no{ width:42px; }
+                        .r-w-date{ width:120px; }
+                        .r-w-time{ width:90px; }
+                        .r-center{ text-align:center; }
+                        .r-muted{ color:#667085; }
+
+                        .r-total td{
+                        background:#F8FAFC;
+                        font-weight:900;
+                        }
+                        .r-total-label{ text-align:center; }
+                    </style>
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

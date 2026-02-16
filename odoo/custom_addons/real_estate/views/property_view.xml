@@ -73,11 +73,15 @@
 
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" />
+                        <label for="ref" />
                         <h1>
-                            <field name="name" />
+                            <field name="ref" />
                         </h1>
                     </div>
+                    <label for='name'/>
+                    <h3>
+                        <field name='name'/>
+                    </h3>
                     <group>
                         <group string='General Info'>
                             <field name="postcode" />
@@ -146,15 +150,26 @@
     />
 
     <!-- Server Action -->
-    <!-- <record id='property_closed_server_action' model='ir.actions.server'>
+    <record id='property_closed_server_action' model='ir.actions.server'>
        <field name='name'>Close Property</field>
        <field name='model_id' ref='model_estate_property'/>
        <field name='binding_model_id' ref='model_estate_property'/>
        <field name='state'>code</field>
        <field name='code'>
-        action= records.action_mark_completed()
+        action= records.action_mark_closed()
        </field>
-    </record> -->
+    </record>
+
+     <record id='change_state_server_action' model='ir.actions.server'>
+        <field name='name'>Change State</field>
+        <field name='model_id' ref='model_estate_property'/>
+        <field name='binding_model_id' ref='model_estate_property'/>
+        <field name='state'>code</field>
+        <field name='code'>
+            action = records.show_change_state_wizard()
+        </field>
+
+    </record>
 
     <!-- Automated Action -->
     <record id='check_expected_selling_date_cron' model='ir.cron'>

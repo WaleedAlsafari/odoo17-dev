@@ -16,16 +16,15 @@
         <field name="name">todo tree</field>
         <field name="model">todo.task</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-danger="is_late == True">
                 <field name="name" />
                 <field name='assign_to_id'/>
                 <field name="due_date" />
                 <field name="status" />
+                <field name='is_late' />
             </tree>
         </field>
     </record>
-
-
 
      <record id="todo_view_form" model="ir.ui.view">
         <field name="name">todo form</field>
@@ -33,12 +32,12 @@
         <field name="arch" type="xml">
             <form>
                 <header> 
-                    <button 
-                    name='action_mark_new'
+                    <button
+                    name='action'
                     type='object'
-                    string='Mark as New'
+                    string='action'
                     class='btn_primary'
-                    invisible='status == "new"'
+                    
                     />
                     <button 
                     name='action_mark_in_progress'
@@ -69,10 +68,23 @@
                             <field name="description" />
                             <field name='assign_to_id'/>
                             <field name="due_date" />
-                            <field name="status" />
+                            <field name="estimated_time" />
+                            <field name='active' invisible='1'/>
                             
                         </group>
+                        <notebook>
+                            <page string='TimeSheet'>
+                                <field name='line_ids'>
+                                    <tree editable='buttom'>
+                                        <field name='date'/>
+                                        <field name='duration'/>
+                                        <field name='note'/>
+                                    </tree>
 
+                                </field>
+
+                            </page>
+                        </notebook>
 
                 </sheet>
                 <div class='oe_chatter'>
@@ -105,5 +117,29 @@
 
             </search>
         </field>
+    </record>
+
+    <record id='todo_closed_server_action' model='ir.actions.server'>
+        <field name='name'>Close Task</field>
+        <field name='model_id' ref='model_todo_task'/>
+        <field name='binding_model_id' ref='model_todo_task'/>
+        <field name='state'>code</field>
+        <field name='code'>
+            action = records.action_mark_closed()
+        </field>
+    </record>
+
+    <record id='todo_check_is_late_cron' model='ir.cron'>
+        <field name='name'>Todo_Task: check is late</field> 
+        <field name='model_id' ref='model_todo_task'/>
+        <field name='state'>code</field>
+        <field name='code'>
+            model._check_if_late()  
+        </field>
+
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name='numbercall'>-1</field>
+        <field name='active'>True</field>
     </record>
 </odoo>

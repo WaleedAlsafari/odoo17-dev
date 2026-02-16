@@ -7,6 +7,8 @@ class estateProperty(models.Model):
     _description = 'Property'
     _inherit = ['mail.thread','mail.activity.mixin']
 
+
+    ref = fields.Char(default='New', readonly=1)
     name = fields.Char(required=1, default='New', size=10) 
     description = fields.Text()
     postcode = fields.Char(required=1)
@@ -40,7 +42,7 @@ class estateProperty(models.Model):
         ('draft','Draft'),
         ('pending','Pending'),
         ('sold','Sold'),
-        ('completed','Completed'),
+        ('closed','closed'),
      
     ],
     default='draft',
@@ -68,6 +70,8 @@ class estateProperty(models.Model):
     @api.model_create_multi
     def create(self,vals):
         rec = super(estateProperty,self).create(vals)
+        if rec.ref == 'New':
+            rec.ref= self.env['ir.sequence'].next_by_code('property_seq')
         rec.state='pending'
         print("Create function have been called")
         return rec
@@ -93,21 +97,38 @@ class estateProperty(models.Model):
         print("delete function have been called")
         return rec
     
+    def _create_history_record(self,old_state,new_state, reason=False):
+        for rec in self:
+            self.env['property.history'].create(
+            {
+                'user_id': self.env.uid,
+                'property_id': rec.id,
+                'old_state': old_state,
+                'new_state': new_state,
+                'reason' : reason 
+            }
+       )
+        return rec
+    
     def action_mark_draft(self):
+        self._create_history_record(self.state,'draft')
         for rec in self:
             rec.state='draft'
 
     def action_mark_pending(self):
+        self._create_history_record(self.state,'pending')
         for rec in self:
             rec.state='pending'
 
     def action_mark_sold(self):
+        self._create_history_record(self.state,'sold')
         for rec in self:
             rec.state='sold'
-
-    def action_mark_completed(self):
+  
+    def action_mark_closed(self):
+        self._create_history_record(self.state,'closed')
         for rec in self:
-            rec.state='completed'
+            rec.state='closed'
 
     @api.depends('selling_price','expected_price','owner_id.phone')
     def _compute_diff_price(self):
@@ -133,7 +154,13 @@ class estateProperty(models.Model):
                 rec.is_late=False
                 print(rec.is_late)
 
-
+    def show_change_state_wizard(self):
+        if self.state =='closed':
+            action = self.env['ir.actions.actions']._for_xml_id('real_estate.change_state_wizard_action')
+            action['context'] = {'default_property_id' : self.id}
+            return action
+        else:
+            raise ValidationError("You can't change state if it's not closed")
 
 
 class PropertyLine(models.Model):
@@ -145,6 +172,7 @@ class PropertyLine(models.Model):
     property_id = fields.Many2one(
         'estate.property'
     )
+
 
   
 

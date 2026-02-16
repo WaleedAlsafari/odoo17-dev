@@ -1,21 +1,105 @@
 <odoo>
     <record id='property_report' model='ir.actions.report'>
-    <field name='name'>Property Report</field>
-    <field name='model'>estate.property</field>
-    <field name='report_type'>qweb-pdf</field>
-    <field name='binding_model_id' ref='model_estate_property'/>
-    <field name='binding_type'>report</field>
-    <field name='report_name'>real_estate.property_report_template</field>
+        <field name='name'>Property Report</field>
+        <field name='model'>estate.property</field>
+        <field name='report_type'>qweb-html</field>
+        <field name='binding_model_id' ref='model_estate_property' />
+        <field name='binding_type'>report</field>
+        <field name='report_name'>real_estate.property_report_template</field>
     </record>
 
 
-
-
+    <!-- Original template from the course -->
     <template id='property_report_template'>
         <t t-call='web.html_container'>
-            <t t-foreach='docs' t-as='o'>
-                <h1>Property Reoport</h1>
+            <t t-call='web.basic_layout'>
+                <t t-foreach='docs' t-as='record'>
+                    <h1>Property Reoport</h1>
+                    <style>
+                        /* table, th, td needs to be added as inline style for pdf report */
+                        table {
+                        width: 100%;
+                        border: 1px solid #b3adad;
+                        border-collapse: collapse;
+                        padding: 5px;
+                        page-break-inside: unset;
+                        }
+                        th {
+                        border: 1px solid #b3adad;
+                        text-align:center;
+                        padding: 5px;
+                        background: #f0f0f0;
+                        color: #313030;
+                        }
+                        td {
+                        border: 1px solid #b3adad;
+                        text-align: center;
+                        padding: 5px;
+                        background: #ffffff;
+                        color: #313030;
+                        }
+
+                        thead { display: table-header-group; }
+                        tfoot { display: table-footer-group; }
+                        tr { page-break-inside: avoid; }
+                        div, section, article { page-break-before: auto !important;
+                        page-break-after: auto !important; }
+
+                    </style>
+                    <table >
+                        <thead>
+                            <tr>
+                                <th colspan='4'>General Inforamtion</th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>Name</td>
+                                <td><t t-esc='record.name'/></td>
+                                <td>Selling Price</td>
+                                <td><t t-esc='record.selling_price'/></td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th colspan='4'>Owner Information</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Owner Name</td>
+                                <td><span t-field='record.owner_id'/></td>
+                                <!-- Same as above -->
+                                <!-- <td><t t-esc='record.owner_id.name'/></td> -->
+                                <td>Owner Phone</td>
+                                <td><t t-esc='record.owner_phone'/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Area</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                   
+                            <tr t-foreach='record.line_ids' t-as='line'>
+                                
+                                <td><t t-esc='line.description'/></td>
+                                <td><t t-esc='line.area'/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </t>
             </t>
         </t>
     </template>
+
+
 </odoo>
