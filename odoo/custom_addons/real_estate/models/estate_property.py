@@ -72,7 +72,7 @@ class estateProperty(models.Model):
         rec = super(estateProperty,self).create(vals)
         if rec.ref == 'New':
             rec.ref= self.env['ir.sequence'].next_by_code('property_seq')
-        rec.state='pending'
+        rec.action_mark_pending()
         print("Create function have been called")
         return rec
     
@@ -105,7 +105,8 @@ class estateProperty(models.Model):
                 'property_id': rec.id,
                 'old_state': old_state,
                 'new_state': new_state,
-                'reason' : reason 
+                'reason' : reason, 
+                'line_ids': [(0,0,{'description' : line.description, 'area' : line.area}) for line in rec.line_ids]
             }
        )
         return rec
@@ -161,6 +162,25 @@ class estateProperty(models.Model):
             return action
         else:
             raise ValidationError("You can't change state if it's not closed")
+    
+    def open_releated_owner_button(self):
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id('real_estate.owner_action')
+        view_id = self.env.ref('real_estate.owner_view_form').id
+        action['res_id'] = self.owner_id.id
+        action['views'] = [[view_id, 'form']]
+        return action
+        
+        # Another way to peform it ###########################
+    #     self.ensure_one()
+    #     return {
+    #     'type': 'ir.actions.act_window',
+    #     'name': 'Owner',
+    #     'res_model': 'owner',
+    #     'view_mode': 'form',
+    #     'res_id': self.owner_id.id,
+    #     'target': 'current',
+    #  }
 
 
 class PropertyLine(models.Model):

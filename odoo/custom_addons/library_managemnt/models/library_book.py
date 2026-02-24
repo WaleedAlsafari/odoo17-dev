@@ -40,11 +40,11 @@ class libraryBook(models.Model):
         ('check_price','check(price >0)','Plase enter a valid price')
     ]
 
-    def _action_set_available(self):
+    def action_set_available(self):
         for rec in self:
             rec.state = 'available'
 
-    def _action_set_borrowed(self):
+    def action_set_borrowed(self):
         for rec in self:
             rec.state = 'borrowed'
 

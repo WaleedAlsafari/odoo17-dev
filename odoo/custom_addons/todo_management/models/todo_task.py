@@ -81,12 +81,7 @@ class TodoTask(models.Model):
                 print(rec.is_late)
     
     def action(self):
-        print(self.env['owner'].create([
-            {
-            'name' : 'Muneer',
-            'phone': '0444444444'
-            }
-        ]))
+        print(self.search(['|',('estimated_time','=','20.0'),('name','=','Task 3')]))
 
 
 

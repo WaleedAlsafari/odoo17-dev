@@ -22,12 +22,12 @@
         <field name='arch' type='xml'>
             <form>
                 <header>
-                    <button name="_action_set_available"
+                    <button name="action_set_available"
                         string="Set Available"
                         type="object"
                 />
 
-                    <button name="_action_set_borrowed"
+                    <button name="action_set_borrowed"
                         string="Borrow"
                         type="object"
                         />

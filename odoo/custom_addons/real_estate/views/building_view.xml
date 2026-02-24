@@ -76,5 +76,6 @@
         name="Buildings"
         parent="estate_property_menu"
         action="building_action"
+        groups= 'real_estate.property_manager_group'
     />
 </odoo>

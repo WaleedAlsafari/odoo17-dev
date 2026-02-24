@@ -43,5 +43,6 @@
         name="tags"
         parent="real_estate_root_menu"
         action="tag_action"
+        groups= 'real_estate.property_manager_group'
     />
 </odoo>
