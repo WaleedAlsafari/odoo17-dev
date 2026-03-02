@@ -30,7 +30,8 @@
     ],
     
     'assets' : { 
-        'web.assets_backend' : ['real_estate/static/src/css/property.css']
+        'web.assets_backend' : ['real_estate/static/src/css/property.css'],
+        'web.report_assets_common' : ['real_estate/static/src/css/property.css']
     },
     'application': True
     

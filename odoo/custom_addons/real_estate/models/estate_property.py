@@ -9,7 +9,7 @@ class estateProperty(models.Model):
 
 
     ref = fields.Char(default='New', readonly=1)
-    name = fields.Char(required=1, default='New', size=10) 
+    name = fields.Char(required=1, size=30) 
     description = fields.Text()
     postcode = fields.Char(required=1)
     date_availability = fields.Date(default= fields.Date.today())
@@ -70,8 +70,8 @@ class estateProperty(models.Model):
     @api.model_create_multi
     def create(self,vals):
         rec = super(estateProperty,self).create(vals)
-        if rec.ref == 'New':
-            rec.ref= self.env['ir.sequence'].next_by_code('property_seq')
+        # if rec.ref == 'New':
+        rec.ref= self.env['ir.sequence'].next_by_code('property_seq')
         rec.action_mark_pending()
         print("Create function have been called")
         return rec

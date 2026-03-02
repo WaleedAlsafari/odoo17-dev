@@ -14,7 +14,7 @@
         <t t-call='web.html_container'>
             <t t-call='web.basic_layout'>
                 <t t-foreach='docs' t-as='record'>
-                    <h1>Property Reoport</h1>
+                    <h1 style='font-family: "BetaniaPatmosIn"'>Property Reoport</h1>
                     <style>
                         /* table, th, td needs to be added as inline style for pdf report */
                         table {
