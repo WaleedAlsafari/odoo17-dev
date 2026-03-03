@@ -9,7 +9,7 @@ class estateProperty(models.Model):
 
 
     ref = fields.Char(default='New', readonly=1)
-    name = fields.Char(required=1, size=30) 
+    name = fields.Char(required=1, size=30, translate=True) 
     description = fields.Text()
     postcode = fields.Char(required=1)
     date_availability = fields.Date(default= fields.Date.today())

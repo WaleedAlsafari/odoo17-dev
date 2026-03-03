@@ -42,7 +42,7 @@ class PropertyApi(http.Controller):
             }
 
     @http.route('/api/get/property', methods=['GET'], type='http', auth='none', csrf=False)
-    def get_property(self, property_id=None, ):
+    def get_property(self, property_id=None ):
 
         if not property_id:
             return request.make_json_response({'error': 'id is required'}, status=400)
@@ -86,3 +86,28 @@ class PropertyApi(http.Controller):
                         "message" : error
                     }, status=400
                 )
+
+    @http.route(route="/api/delete/property/<int:property_id>", methods=["DELETE"], type="http", auth="none", csrf=False)
+    def delete_property(self, property_id):
+        if not property_id:
+            return request.make_json_response(
+                    {
+                        "message" : "Please enter a valid id"
+                    }, status=400
+                )
+        try:
+            res = request.env['estate.property'].sudo().search([('id','=',property_id)])
+
+            res_d = request.env['estate.property'].sudo().unlink(res)
+
+            if res_d:
+                return {
+                    "message" : "Property deleted successfully"
+                }
+        except Exception as error:
+            return request.make_json_response(
+                    {
+                        "message" : error
+                    }, status=400
+                )
+
