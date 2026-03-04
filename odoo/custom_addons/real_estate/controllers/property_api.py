@@ -1,6 +1,19 @@
+from urllib.parse import parse_qs
+
 from odoo import http
 from odoo.http import request
 import json
+
+
+def valid_response(data,code):
+    response = {
+        "data" : data
+    }
+
+    return request.make_json_response(
+                    response,
+                    status=code
+                ) 
 class PropertyApi(http.Controller):
     
     @http.route(route='/api/create/property', methods=['POST'], type='http', auth='none', csrf=False)
@@ -97,13 +110,22 @@ class PropertyApi(http.Controller):
                 )
         try:
             res = request.env['estate.property'].sudo().search([('id','=',property_id)])
+            if not res:
+                return request.make_json_response(
+                    {
+                        "message" : "property doesn't exist"
+                    }, status=404
+                )
 
-            res_d = request.env['estate.property'].sudo().unlink(res)
+            print(res.name)
+            res.unlink()
 
-            if res_d:
-                return {
-                    "message" : "Property deleted successfully"
-                }
+            if res:
+                return request.make_json_response(
+                    {
+                        "message" : "property deleted successfully"
+                    }, status=200
+                )
         except Exception as error:
             return request.make_json_response(
                     {
@@ -111,3 +133,51 @@ class PropertyApi(http.Controller):
                     }, status=400
                 )
 
+    @http.route('/api/get/properties', methods=['GET'], type='http', auth='none', csrf=False)
+    def get_property(self):
+        try:
+            res = request.env['estate.property'].sudo().search([])
+
+            if not res:
+                return request.make_json_response({'error': 'No property found'}, status=404)
+            
+            
+            return valid_response(
+                [{"id" : rec.id,
+                "name" : rec.name
+                } for rec in res],
+                status=200
+            )  
+        except Exception as error:
+            return request.make_json_response(
+                    {
+                        "message" : error
+                    }, status=400
+                )
+
+    @http.route('/api/get/filter/properties', methods=['GET'], type='http', auth='none', csrf=False)
+    def get_property(self,state):
+        try:
+            params = parse_qs(request.httprequest.query_string.decode('utf-8'))
+            property_domain = []
+            if params.get('state'):
+                property_domain = [('state','=',params.get('state')[0])]    
+
+            res = request.env['estate.property'].sudo().search(property_domain)
+
+            if not res:
+                return request.make_json_response({'error': 'No property found'}, status=404)
+            
+            
+            return valid_response(
+                [{"id" : rec.id,
+                "name" : rec.name
+                } for rec in res],
+                code=200
+            )  
+        except Exception as error:
+            return request.make_json_response(
+                    {
+                        "message" : error
+                    }, status=400
+                )
