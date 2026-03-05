@@ -67,6 +67,11 @@
                         class='btn-primary'
                         invisible="state != 'pending'"
                     />
+                    <button name='get_property_api'
+                        type='object'
+                        string='Get Properties from API'
+                        class='btn-primary'
+                    />
 
                     <field name='state' widget='statusbar' />
                 </header>

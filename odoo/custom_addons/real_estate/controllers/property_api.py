@@ -134,7 +134,7 @@ class PropertyApi(http.Controller):
                 )
 
     @http.route('/api/get/properties', methods=['GET'], type='http', auth='none', csrf=False)
-    def get_property(self):
+    def get_properties(self):
         try:
             res = request.env['estate.property'].sudo().search([])
 
@@ -146,7 +146,30 @@ class PropertyApi(http.Controller):
                 [{"id" : rec.id,
                 "name" : rec.name
                 } for rec in res],
-                status=200
+                code=200
+            )  
+        except Exception as error:
+            return request.make_json_response(
+                    {
+                        "message" : error
+                    }, status=400
+                )
+        
+    @http.route('/api/get/pagination/properties', methods=['GET'], type='http', auth='none', csrf=False)
+    def get_properties_with_pagination(self):
+        try:
+            # offset: start from, limit: number of record to display per page
+            res = request.env['estate.property'].sudo().search([],limit=10, order='id desc')
+
+            if not res:
+                return request.make_json_response({'error': 'No property found'}, status=404)
+            
+            
+            return valid_response(
+                [{"id" : rec.id,
+                "name" : rec.name
+                } for rec in res],
+                code=200
             )  
         except Exception as error:
             return request.make_json_response(
@@ -156,7 +179,7 @@ class PropertyApi(http.Controller):
                 )
 
     @http.route('/api/get/filter/properties', methods=['GET'], type='http', auth='none', csrf=False)
-    def get_property(self,state):
+    def get_properties_with_filter(self,state):
         try:
             params = parse_qs(request.httprequest.query_string.decode('utf-8'))
             property_domain = []

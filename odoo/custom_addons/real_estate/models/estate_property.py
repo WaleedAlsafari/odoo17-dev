@@ -1,3 +1,5 @@
+import requests
+
 from odoo import models,fields,api
 from odoo.exceptions import ValidationError
 
@@ -181,6 +183,11 @@ class estateProperty(models.Model):
     #     'res_id': self.owner_id.id,
     #     'target': 'current',
     #  }
+
+    def get_property_api(self):
+        payload = dict()
+        response = requests.get("http://localhost:8069/api/get/properties", data=payload)
+        print(response.status_code)
 
 
 class PropertyLine(models.Model):
