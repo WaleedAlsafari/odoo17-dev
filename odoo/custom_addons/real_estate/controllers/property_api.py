@@ -27,16 +27,24 @@ class PropertyApi(http.Controller):
                     }, status=400
                 ) 
         try:
-            res = request.env['estate.property'].sudo().create(vals)
+            cr = request.env.cr
+            columns = ', '.join(vals.keys())
+            values = ', '.join(['%s'] * len(vals))
+            query = f"""insert into estate_property ({columns}) values ({values}) returning id,name"""
+            cr.execute(query, tuple(vals.values()))
+            res = cr.fetchone()
+            request.env.cr.commit()
             print(res)
+            # res = request.env['estate.property'].sudo().create(vals)
+            # print(res)
             if res:
-                return request.make_json_response(
-                    {
-                        "message" : "Property created successfully",
-                        "id" : res.id,
-                        "name" : res.name
-                    }, status=201
-                ) 
+                    return request.make_json_response(
+                        {
+                            "message" : "Property created successfully",
+                            "id" : res[0],
+                            "name" : res[1],
+                        }, status=201
+                    ) 
         except Exception as error:
             return request.make_json_response(
                     {

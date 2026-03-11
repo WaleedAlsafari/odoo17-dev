@@ -11,7 +11,7 @@ class estateProperty(models.Model):
 
 
     ref = fields.Char(default='New', readonly=1)
-    name = fields.Char(required=1, size=30, translate=True) 
+    name = fields.Char(required=1, size=30, translate=False) 
     description = fields.Text()
     postcode = fields.Char(required=1)
     date_availability = fields.Date(default= fields.Date.today())
@@ -186,8 +186,8 @@ class estateProperty(models.Model):
 
     def get_property_api(self):
         payload = dict()
-        response = requests.get("http://localhost:8069/api/get/properties", data=payload)
-        print(response.status_code)
+        response = requests.get("http://192.168.0.156:8069/api/get/properties")
+        print(response.content)
 
 
 class PropertyLine(models.Model):

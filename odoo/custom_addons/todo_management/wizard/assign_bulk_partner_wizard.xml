@@ -1,0 +1,31 @@
+<odoo>
+
+    <record id='assign_bulk_partner_wizard_form' model='ir.ui.view'>
+        <field name='name'>Assign Bulk Partner Form</field>
+        <field name ='model'>assign.bulk.partner</field>
+        <field name='arch' type='xml'>
+            <form>
+                <group>
+                    <field name='todo_ids' widget='many2many_tags'/>
+                    <field name='assign_to_id'/>
+                </group>
+                <footer>
+                    <button string='Confirm' type='object' name='confirm_action' class='btn-primary'/>
+                    <button string='Cancel' class='btn-secondary' special='cancel'/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id='assign_bulk_partner_action' model="ir.actions.act_window"> 
+        <field name='name'>Assign Partner</field>
+        <field name='res_model'>assign.bulk.partner</field>
+        <field name='target'>new</field>
+        <field name='view_mode'>form</field>
+
+    </record>
+
+
+
+
+</odoo>

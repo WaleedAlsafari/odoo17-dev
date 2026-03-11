@@ -8,6 +8,7 @@ class TodoTask(models.Model):
     _inherit = ['mail.thread','mail.activity.mixin']
     active = fields.Boolean(default=True)
 
+    ref = fields.Char(default ='New', readonly=1)
     name = fields.Char(required=1)
     description = fields.Text()
     assign_to_id = fields.Many2one('res.partner', required=1)
@@ -47,14 +48,17 @@ class TodoTask(models.Model):
     
     def write(self,vals):
         rec = super(TodoTask,self).write(vals)
-        if self.status == 'closed' and 'status' not in vals:
-            raise ValidationError("You can't update a closed task")
-        self._check_estimated_time_exceeded()
+        for rec in self:
+            if rec.status == 'closed' and 'status' not in vals:
+                raise ValidationError("You can't update a closed task")
+            rec._check_estimated_time_exceeded()
         return rec        
 
 
     def action_mark_in_progress(self):
-        self.status='in progress'
+        for rec in self:
+            rec.status='in progress'
+            rec.ref= self.env['ir.sequence'].next_by_code('todo_seq')
 
     def action_mark_completed(self):
         self.status='completed'
@@ -76,12 +80,21 @@ class TodoTask(models.Model):
     def _check_if_late(self):
         self = self.search([])
         for rec in self:
-            if rec.due_date < fields.Date.today():
+            if rec.due_date < fields.Date.today() and rec.status in ('new','in progress'):
                 rec.is_late = True
                 print(rec.is_late)
     
     def action(self):
         print(self.search(['|',('estimated_time','=','20.0'),('name','=','Task 3')]))
+
+
+    def open_assign_bulk_partner_wizard(self):
+        action = self.env.ref('todo_management.assign_bulk_partner_action').read()[0]
+        action['context'] = {
+        'default_todo_ids': self.ids,
+    }
+        return action
+        
 
 
 
