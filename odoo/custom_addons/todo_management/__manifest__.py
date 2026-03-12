@@ -12,6 +12,7 @@
     """,
     # data files always loaded at installation
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'data/todo_sequence.xml',
         'views/todo_menu.xml',

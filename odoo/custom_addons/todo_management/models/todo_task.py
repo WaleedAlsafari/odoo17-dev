@@ -85,6 +85,7 @@ class TodoTask(models.Model):
                 print(rec.is_late)
     
     def action(self):
+        print(self.assign_to_id)
         print(self.search(['|',('estimated_time','=','20.0'),('name','=','Task 3')]))
 
 
