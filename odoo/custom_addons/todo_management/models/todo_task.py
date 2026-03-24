@@ -11,7 +11,7 @@ class TodoTask(models.Model):
     ref = fields.Char(default ='New', readonly=1)
     name = fields.Char(required=1)
     description = fields.Text()
-    assign_to_id = fields.Many2one('res.partner', required=1)
+    assign_to_id = fields.Many2one('res.users', required=1)
     due_date = fields.Date(required=1)
     estimated_time = fields.Float(
         digits=(4, 1),
@@ -31,6 +31,7 @@ class TodoTask(models.Model):
         ],
         tracking='1'
     )
+    is_managers_group = fields.Boolean(compute="_check_if_manager_group")
 
     line_ids = fields.One2many(
         'todo.line',
@@ -57,6 +58,8 @@ class TodoTask(models.Model):
 
     def action_mark_in_progress(self):
         for rec in self:
+            if not rec.env.user.has_group('todo_management.todo_managers_group'):
+                raise ValidationError("You are not allowed to do this action")
             rec.status='in progress'
             rec.ref= self.env['ir.sequence'].next_by_code('todo_seq')
 
@@ -65,6 +68,8 @@ class TodoTask(models.Model):
 
     def action_mark_closed(self):
         for rec in self:
+            if not rec.env.user.has_group('todo_management.todo_managers_group'):
+                raise ValidationError("You are not allowed to do this action")
             rec.status='closed'
         
     @api.depends('line_ids.duration')
@@ -95,6 +100,13 @@ class TodoTask(models.Model):
         'default_todo_ids': self.ids,
     }
         return action
+    
+    def _check_if_manager_group(self):
+        for rec in self:
+            if not rec.env.user.has_group('todo_management.todo_managers_group'):
+                rec.is_managers_group=False
+            else:
+                rec.is_managers_group=True
         
 
 

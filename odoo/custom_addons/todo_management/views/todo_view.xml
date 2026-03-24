@@ -45,7 +45,8 @@
                     string='Mark as In Progress'
                     class='btn_primary'
                     invisible='status != "new"'
-                    />
+                    groups="todo_management.todo_managers_group"/>
+       
                     <button 
                     name='action_mark_completed'
                     type='object'
@@ -64,18 +65,19 @@
                         </h1>
                     </div>
                     <div class="oe_title">
-                        <label for="name" />
+                        <label for="name"/>
                         <h2>
-                            <field name="name" />
+                            <field name="name" readonly='is_managers_group != True'/>
                         </h2>
                     </div>
                
                         <group string='General Info'>
                             <field name="description" />
-                            <field name='assign_to_id'/>
-                            <field name="due_date" />
-                            <field name="estimated_time" />
+                            <field name='assign_to_id' readonly='is_managers_group != True'/>
+                            <field name="due_date" readonly='is_managers_group != True'/>
+                            <field name="estimated_time" readonly='is_managers_group != True'/>
                             <field name='active' invisible='1'/>
+                            <field name='is_managers_group' invisible='1'/>
                             
                         </group>
                         <notebook>
@@ -133,6 +135,7 @@
         <field name='code'>
             action = records.action_mark_closed()
         </field>
+        <field name="groups_id" eval="[(4, ref('todo_management.todo_managers_group'))]"/>
     </record>
 
     <record id='assign_bulk_partner_server_action' model='ir.actions.server'>
@@ -143,6 +146,7 @@
         <field name='code'>
             action = records.open_assign_bulk_partner_wizard()
         </field>
+         <field name="groups_id" eval="[(4, ref('todo_management.todo_managers_group'))]"/>
     </record>
 
     <record id='todo_check_is_late_cron' model='ir.cron'>
