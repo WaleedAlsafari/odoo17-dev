@@ -190,6 +190,10 @@ class estateProperty(models.Model):
         print(response.content)
 
 
+    def property_xlsx_report(self):
+        print("within property_xlsx_report")
+
+
 class PropertyLine(models.Model):
     _name = 'property.line'
 
