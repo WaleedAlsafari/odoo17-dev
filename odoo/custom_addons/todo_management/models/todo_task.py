@@ -105,8 +105,10 @@ class TodoTask(models.Model):
         for rec in self:
             if not rec.env.user.has_group('todo_management.todo_managers_group'):
                 rec.is_managers_group=False
+                print(rec.is_managers_group)
             else:
                 rec.is_managers_group=True
+                print(rec.is_managers_group)
         
 
 
