@@ -6,6 +6,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree multi_edit='1' create='1' edit='1' delete='1' class='custom_header' decoration-danger="is_late == True">
+                <header>
+                    <button name='property_xlsx_report' type='object' string='Print xlsx Report' class='btn-primary'/>
+                </header>
                 <field name="name" />
                 <field name="owner_id" />
                 <field name="owner_phone" />
