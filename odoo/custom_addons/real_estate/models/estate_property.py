@@ -191,7 +191,11 @@ class estateProperty(models.Model):
 
 
     def property_xlsx_report(self):
-        print("within property_xlsx_report")
+        return {
+            "type" : "ir.actions.act_url",
+            "url" : f'/property/excel/report/{self.env.context.get("active_ids")}',
+            "target" : "new"
+        }
 
 
 class PropertyLine(models.Model):

@@ -209,4 +209,18 @@
     <field name='active'>True</field>
 
     </record>
+
+
+    <record id='property_list_view_action' model='ir.actions.act_window'>
+        <field name='name'>List View OWL</field>
+        <field name='res_model'>estate.property</field>
+    </record>
+
+    <menuitem
+        id="list_view_item"
+        name="Properties OWL"
+        parent="estate_property_menu"
+        action="property_list_view_action"
+    />
+
 </odoo>
