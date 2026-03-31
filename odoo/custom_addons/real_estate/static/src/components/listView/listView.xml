@@ -1,3 +1,31 @@
-<odoo>
-    
-</odoo>
+<template xml:space="preserve">
+    <t t-name="real_estate.ListView">
+     
+       
+
+<div class="o_list_view_wrapper">
+    <table class="o_list_view">
+        <thead>
+            <tr>
+                <th class="o_checkbox_cell"></th>
+                <th>Name</th>
+                <th>Postcode</th>
+                <th class="o_field_numeric">Selling Price</th>
+                <th>Date Availability</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="o_checkbox_cell">
+                    <input type="checkbox" />
+                </td>
+                <td class="o_field_name"><a href="#">Property 1</a></td>
+                <td>12345</td>
+                <td class="o_field_numeric">4,000.00</td>
+                <td>12/12/2026</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    </t>
+</template>
