@@ -2,28 +2,29 @@
     <t t-name="real_estate.ListView">
      
        
-
-<div class="o_list_view_wrapper">
-    <table class="o_list_view">
+<div class="property_list_view_wrapper">
+    <table class="property_list_view">
         <thead>
             <tr>
-                <th class="o_checkbox_cell"></th>
+                <th class="prop_checkbox_cell"></th>
                 <th>Name</th>
                 <th>Postcode</th>
-                <th class="o_field_numeric">Selling Price</th>
+                <th class="prop_field_numeric">Selling Price</th>
                 <th>Date Availability</th>
             </tr>
         </thead>
         <tbody>
+            <t t-foreach='state.records' t-as='record' t-key='record.id'>
             <tr>
-                <td class="o_checkbox_cell">
+                <td class="prop_checkbox_cell">
                     <input type="checkbox" />
                 </td>
-                <td class="o_field_name"><a href="#">Property 1</a></td>
-                <td>12345</td>
-                <td class="o_field_numeric">4,000.00</td>
-                <td>12/12/2026</td>
+                <td class="prop_field_name"><a href="#"><t t-esc='record.name'/></a></td>
+                <td><t t-esc='record.postcode'/></td>
+                <td class="prop_field_numeric"><t t-esc='record.selling_price'/></td>
+                <td><t t-esc='record.date_availability'/></td>
             </tr>
+            </t>
         </tbody>
     </table>
 </div>

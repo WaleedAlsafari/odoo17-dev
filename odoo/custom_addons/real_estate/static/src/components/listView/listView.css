@@ -1,6 +1,6 @@
 /* Odoo-style List View CSS */
 
-.o_list_view {
+.property_list_view {
     width: 100%;
     border-collapse: collapse;
     font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -10,11 +10,11 @@
 }
 
 /* ── Header ── */
-.o_list_view thead tr {
+.property_list_view thead tr {
     background-color: #4a90d9;
 }
 
-.o_list_view thead th {
+.property_list_view thead th {
     padding: 9px 12px;
     text-align: left;
     font-weight: 600;
@@ -25,42 +25,42 @@
     user-select: none;
 }
 
-.o_list_view thead th:first-child {
+.property_list_view thead th:first-child {
     width: 36px;
     text-align: center;
     padding-left: 8px;
 }
 
 /* ── Rows ── */
-.o_list_view tbody tr {
+.property_list_view tbody tr {
     border-bottom: 1px solid #e8eaed;
     transition: background-color 0.1s ease;
 }
 
-.o_list_view tbody tr:hover {
+.property_list_view tbody tr:hover {
     background-color: #f0f4ff;
 }
 
-.o_list_view tbody tr:last-child {
+.property_list_view tbody tr:last-child {
     border-bottom: none;
 }
 
 /* ── Cells ── */
-.o_list_view tbody td {
+.property_list_view tbody td {
     padding: 8px 12px;
     vertical-align: middle;
     color: #212529;
     white-space: nowrap;
 }
 
-.o_list_view tbody td:first-child {
+.property_list_view tbody td:first-child {
     width: 36px;
     text-align: center;
     padding-left: 8px;
 }
 
 /* Checkbox column */
-.o_list_view .o_checkbox_cell input[type="checkbox"] {
+.property_list_view .prop_checkbox_cell input[type="checkbox"] {
     width: 14px;
     height: 14px;
     cursor: pointer;
@@ -68,36 +68,36 @@
 }
 
 /* ── Field: Name (clickable link style) ── */
-.o_list_view .o_field_name a,
-.o_list_view .o_field_name {
+.property_list_view .prop_field_name a,
+.property_list_view .prop_field_name {
     color: #875a7b; /* Odoo default purple-link for record names */
     font-weight: 400;
     text-decoration: none;
     cursor: pointer;
 }
 
-.o_list_view .o_field_name a:hover {
+.property_list_view .prop_field_name a:hover {
     text-decoration: underline;
 }
 
 /* ── Numeric fields: right-aligned ── */
-.o_list_view .o_field_numeric {
+.property_list_view .prop_field_numeric {
     text-align: right;
 }
 
 /* ── State badge ── */
-.o_list_view .o_field_state {
+.property_list_view .prop_field_state {
     font-size: 12px;
     color: #555;
 }
 
 /* ── "Is Late" / red row highlight ── */
-.o_list_view tbody tr.o_is_late td {
+.property_list_view tbody tr.prop_is_late td {
     color: #e05e5e;
 }
 
-.o_list_view tbody tr.o_is_late .o_field_name a,
-.o_list_view tbody tr.o_is_late .o_field_name {
+.property_list_view tbody tr.prop_is_late .o_field_name a,
+.property_list_view tbody tr.prop_is_late .o_field_name {
     color: #e05e5e;
 }
 
@@ -105,12 +105,12 @@
 /* .o_list_view tbody tr:nth-child(even) { background-color: #fafafa; } */
 
 /* ── Selected row ── */
-.o_list_view tbody tr.o_selected {
+.property_list_view tbody tr.prop_selected {
     background-color: #dce9ff;
 }
 
 /* ── Wrapper (mimics Odoo's .o_view_controller panel) ── */
-.o_list_view_wrapper {
+.property_list_view_wrapper {
     border: 1px solid #dee2e6;
     border-radius: 4px;
     overflow: hidden;

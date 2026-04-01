@@ -17,6 +17,7 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/property_seq.xml',
+        'data/data.xml',
         'views/base_menu.xml',
         'views/property_view.xml',
         'views/property_history_view.xml',
