@@ -19,7 +19,7 @@ export class ListViewAction extends Component {
         this.loadRecords();
         // rander/refresh the component automattically each 3ms
         this.intervalId = setInterval(() => {this.loadRecords(),3000})
-        onWillUnmount(() => {this.intervalId})
+        onWillUnmount(() => {clearInterval(this.intervalId)})
 
     };
 
