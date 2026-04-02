@@ -1,7 +1,11 @@
 <template xml:space="preserve">
     <t t-name="real_estate.ListView">
      
+       <h1>Properties</h1>
        
+       <button class='btn-primary' t-on-click='createProperty'>Create</button>
+
+
 <div class="property_list_view_wrapper">
     <table class="property_list_view">
         <thead>

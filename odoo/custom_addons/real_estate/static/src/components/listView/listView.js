@@ -18,8 +18,8 @@ export class ListViewAction extends Component {
         this.rpc= useService('rpc');
         this.loadRecords();
         // rander/refresh the component automattically each 3ms
-        this.intervalId = setInterval(() => {this.loadRecords(),3000})
-        onWillUnmount(() => {clearInterval(this.intervalId)})
+       this.intervalId = setInterval(() => {this.loadRecords(),3000})
+       onWillUnmount(() => {clearInterval(this.intervalId)})
 
     };
 
@@ -36,6 +36,23 @@ export class ListViewAction extends Component {
         });
         this.state.records = result;
     };
+
+    async createProperty(){
+         await this.rpc("/web/dataset/call_kw", {
+            model : 'estate.property',
+            method : 'create',
+            args : [{
+                name : 'propertyOWL',
+                postcode : '12345',
+                selling_price : 9999,
+                description : 'test'
+
+            }],
+            kwargs : {}
+        });
+    }
+
+
     
 }
 
