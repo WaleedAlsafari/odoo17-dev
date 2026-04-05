@@ -4,10 +4,11 @@
 import { Component, useState, onWillUnmount } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import {FormView} from "@real_estate/components/formView/formView"
 
 export class ListViewAction extends Component {
     static template = "real_estate.ListView";
-
+    static components = {FormView};
 
 
     setup(){
@@ -18,8 +19,8 @@ export class ListViewAction extends Component {
         this.rpc= useService('rpc');
         this.loadRecords();
         // rander/refresh the component automattically each 3ms
-       this.intervalId = setInterval(() => {this.loadRecords(),3000})
-       onWillUnmount(() => {clearInterval(this.intervalId)})
+    //    this.intervalId = setInterval(() => {this.loadRecords(),3000})
+    //    onWillUnmount(() => {clearInterval(this.intervalId)})
 
     };
 
@@ -50,10 +51,27 @@ export class ListViewAction extends Component {
             }],
             kwargs : {}
         });
+
+        this.loadRecords()
+    }
+
+    async deleteRecord(recordId){
+        await this.rpc("/web/dataset/call_kw", {
+            model : 'estate.property',
+            method : 'unlink',
+            args : [recordId],
+            kwargs : {}
+        })
+        this.loadRecords()
+      
     }
 
 
+
+    toggleCreateForm(){
+        this.state.showFormView = !this.state.showFormView;
     
+    }
 }
 
 registry.category("actions").add("real_estate.action_list_view",ListViewAction);

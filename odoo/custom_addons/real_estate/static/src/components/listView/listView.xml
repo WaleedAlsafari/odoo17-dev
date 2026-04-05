@@ -3,8 +3,14 @@
      
        <h1>Properties</h1>
        
-       <button class='btn-primary' t-on-click='createProperty'>Create</button>
+       <button class='btn-primary' t-on-click='toggleCreateForm'>
+        <t t-if='state.showFormView'>Close</t>
+        <t t-else=''>New</t>
+       </button>
 
+       <t t-if='state.showFormView'>
+        <FormView/>
+       </t>
 
 <div class="property_list_view_wrapper">
     <table class="property_list_view">
@@ -15,6 +21,7 @@
                 <th>Postcode</th>
                 <th class="prop_field_numeric">Selling Price</th>
                 <th>Date Availability</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +34,7 @@
                 <td><t t-esc='record.postcode'/></td>
                 <td class="prop_field_numeric"><t t-esc='record.selling_price'/></td>
                 <td><t t-esc='record.date_availability'/></td>
+                <td><button class='btn btn-danger' t-on-click='deleteRecord.bind(this, record.id)'>Delete</button></td>
             </tr>
             </t>
         </tbody>

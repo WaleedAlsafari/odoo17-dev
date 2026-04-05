@@ -1,0 +1,31 @@
+<template xml:space='preserve'>
+<t t-name='real_estate.FormView'>
+    <div class='p-3'>
+
+        <div class='mb-3'>
+            <label>Name</label>
+            <input t-model='state.name' placeholder='Please enter the name'/>
+        </div>
+
+        <div class='mb-3'>
+            <label>Postcode</label>
+            <input t-model='state.postcode' placeholder='Please enter the postcode'/>
+        </div>
+
+        <div class='mb-3'>
+            <label>Selling Price</label>
+            <input t-model='state.selling_price' placeholder='Please enter the price'/>
+        </div>
+
+        <div class='mb-3'>
+            <label>Date Availability</label>
+            <input t-model='state.date_availability' type='date' placeholder='Please enter the date of availability'/>
+        </div>
+
+        <div class='footer'>
+            <button class='btn btn-primary me-2' t-on-click='() => this.createRecord()'>Save</button>
+            <button class='btn btn-secondary' t-on-click='() => this.cancel()'>Cancel</button>
+        </div>
+        </div>
+</t>
+</template>
