@@ -32,13 +32,14 @@ export class FormView extends Component {
             args : [{
                 name : this.state.name,
                 postcode : this.state.postcode,
-                postcode : this.state.bedrooms,
+                bedrooms : this.state.bedrooms,
                 selling_price : this.state.selling_price,
                 date_availability : this.state.date_availability
             }],
             kwargs : {}
         })
         this.props.loadRecords();
+        this.props.toggleCreateForm();
         
     }
 
@@ -49,6 +50,7 @@ export class FormView extends Component {
         this.state.bedrooms = '';
         this.state.selling_price = '';
         this.state.date_availability = '';
+        this.props.toggleCreateForm();
     }
     
 }

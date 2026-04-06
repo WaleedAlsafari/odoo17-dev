@@ -72,6 +72,8 @@ export class ListViewAction extends Component {
         this.state.showFormView = !this.state.showFormView;
     
     }
+
+  
 }
 
 registry.category("actions").add("real_estate.action_list_view",ListViewAction);
