@@ -22,6 +22,11 @@
             <input t-model='state.date_availability' type='date' placeholder='Please enter the date of availability'/>
         </div>
 
+        <div class='mb-3'>
+            <label>Bedrooms</label>
+            <input t-model='state.bedrooms' placeholder='Please enter number of bedrooms'/>
+        </div>
+
         <div class='footer'>
             <button class='btn btn-primary me-2' t-on-click='() => this.createRecord()'>Save</button>
             <button class='btn btn-secondary' t-on-click='() => this.cancel()'>Cancel</button>

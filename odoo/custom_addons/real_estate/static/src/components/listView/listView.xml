@@ -9,7 +9,7 @@
        </button>
 
        <t t-if='state.showFormView'>
-        <FormView/>
+        <FormView loadRecords.bind="loadRecords"/>
        </t>
 
 <div class="property_list_view_wrapper">

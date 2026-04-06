@@ -16,11 +16,14 @@ export class FormView extends Component {
         this.state = useState({
             name : '',
             postcode : '',
+            bedrooms : '',
             selling_price : '',
             date_availability : ''
         });
         this.rpc = useService('rpc');
+      
     }
+
 
     async createRecord(){
         await this.rpc('/web/dataset/call_kw', {
@@ -29,17 +32,21 @@ export class FormView extends Component {
             args : [{
                 name : this.state.name,
                 postcode : this.state.postcode,
+                postcode : this.state.bedrooms,
                 selling_price : this.state.selling_price,
                 date_availability : this.state.date_availability
             }],
             kwargs : {}
         })
+        this.props.loadRecords();
+        
     }
 
 
     cancel(){
         this.state.name = '';
         this.state.postcode = '';
+        this.state.bedrooms = '';
         this.state.selling_price = '';
         this.state.date_availability = '';
     }
